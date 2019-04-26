@@ -1,3 +1,5 @@
+var _ = require('lodash');
+
 function getRandomNumber() {
 	var number = Math.floor(Math.random() * 9);
 	if (!numeros.includes(number)) {
@@ -6,6 +8,15 @@ function getRandomNumber() {
 	} else {
 		return getRandomNumber()
 	}
+}
+
+function printMatriz(matriz) {
+
+	console.log(matriz[0])
+	console.log(matriz[1])
+	console.log(matriz[2])
+
+	console.log()
 }
 
 var matriz = new Array(3)
@@ -43,11 +54,6 @@ matrizSucesso[2][0] = 7;
 matrizSucesso[1][0] = 8;
 
 
-function calculaMelhorJogada(matriz) {
-
-	return 'esquerda';
-}
-
 function pegaPosicaoMe(matriz) {
 	var xPositionMe;
 	var yPositionMe;
@@ -62,61 +68,113 @@ function pegaPosicaoMe(matriz) {
 	return erro;
 }
 
-function fazJogada(melhorMovimento, matriz) {
+function calcularJogadasPossiveis(matriz, xPositionMe, yPositionMe) {
+	var movimentosPossiveis = new Array();
+	if (matriz[xPositionMe + 1][yPositionMe]) {
+		movimentosPossiveis.push({ movimento: 'baixo', score: 0 })
+	}
+	if (matriz[xPositionMe - 1][yPositionMe]) {
+		movimentosPossiveis.push({ movimento: 'topo', score: 0 })
+	}
+	if (matriz[xPositionMe][yPositionMe + 1]) {
+		movimentosPossiveis.push({ movimento: 'direita', score: 0 })
+	}
+	if (matriz[xPositionMe][yPositionMe - 1]) {
+		movimentosPossiveis.push({ movimento: 'esquerda', score: 0 })
+	}
+
+	return movimentosPossiveis;
+}
+
+function calculaScore(matrizComparativa, matrizSucesso) {
+	var score = 0;
+	for (var x = 0; x < matriz.length; ++x) {
+		for (var y = 0; y < matriz[x].length; ++y) {
+			if(matrizComparativa[x][y] === matrizSucesso[x][y]){
+				score++;
+			}
+		}
+	}
+	return score;
+}
+
+function calculaMelhorJogada(matriz) {
+
 	var { xPositionMe, yPositionMe } = pegaPosicaoMe(matriz);
+
+	var jogadasPossiveis = calcularJogadasPossiveis(matriz,
+	                                                xPositionMe, yPositionMe);
+
+	var melhorJogada = {
+		movimento: null,
+		score: 0
+	};
+
+	for (var x1 = 0; x1 < jogadasPossiveis.length; ++x1) {
+
+		var matrizComparativa = fazJogada(jogadasPossiveis[x1].movimento, matriz);
+
+		jogadasPossiveis[x1].score = calculaScore(matrizComparativa, matrizSucesso);
+
+	}
+
+	for (var x2 = 0; x2 < jogadasPossiveis.length; ++x2) {
+		if (jogadasPossiveis[x2].score > melhorJogada.score) {
+			melhorJogada.movimento = jogadasPossiveis[x2].movimento;
+		}
+	}
+
+	return melhorJogada.movimento;
+}
+
+function fazJogada(melhorMovimento, matriz) {
+	var matrizCopy = _.clone(matriz);
+	var { xPositionMe, yPositionMe } = pegaPosicaoMe(matrizCopy);
 
 	var numeroTrocaMovimento;
 
 	switch (melhorMovimento) {
-		case 'topo':
-			if(matriz[xPositionMe+ 1][yPositionMe]) {
-				numeroTrocaMovimento = matriz[xPositionMe + 1][yPositionMe];
-				matriz[xPositionMe + 1][yPositionMe] = matriz[xPositionMe][yPositionMe];
-				matriz[xPositionMe][yPositionMe] = numeroTrocaMovimento;
+		case 'baixo':
+			if (matrizCopy[xPositionMe + 1][yPositionMe]) {
+				numeroTrocaMovimento = matrizCopy[xPositionMe + 1][yPositionMe];
+				matrizCopy[xPositionMe + 1][yPositionMe] = matrizCopy[xPositionMe][yPositionMe];
+				matrizCopy[xPositionMe][yPositionMe] = numeroTrocaMovimento;
 			}
 			break
-		case 'baixo':
-			if(matriz[xPositionMe- 1][yPositionMe]) {
-				numeroTrocaMovimento = matriz[xPositionMe - 1][yPositionMe];
-				matriz[xPositionMe - 1][yPositionMe] = matriz[xPositionMe][yPositionMe];
-				matriz[xPositionMe][yPositionMe] = numeroTrocaMovimento;
+		case 'topo':
+			if (matrizCopy[xPositionMe - 1][yPositionMe]) {
+				numeroTrocaMovimento = matrizCopy[xPositionMe - 1][yPositionMe];
+				matrizCopy[xPositionMe - 1][yPositionMe] = matrizCopy[xPositionMe][yPositionMe];
+				matrizCopy[xPositionMe][yPositionMe] = numeroTrocaMovimento;
 			}
 			break
 		case 'esquerda':
-			if(matriz[xPositionMe][yPositionMe - 1]) {
-				numeroTrocaMovimento = matriz[xPositionMe][yPositionMe - 1];
-				matriz[xPositionMe][yPositionMe - 1] = matriz[xPositionMe][yPositionMe];
-				matriz[xPositionMe][yPositionMe] = numeroTrocaMovimento;
+			if (matrizCopy[xPositionMe][yPositionMe - 1]) {
+				numeroTrocaMovimento = matrizCopy[xPositionMe][yPositionMe - 1];
+				matrizCopy[xPositionMe][yPositionMe - 1] = matrizCopy[xPositionMe][yPositionMe];
+				matrizCopy[xPositionMe][yPositionMe] = numeroTrocaMovimento;
 			}
 			break
 		case 'direita':
-			if(matriz[xPositionMe][yPositionMe + 1]) {
-				numeroTrocaMovimento = matriz[xPositionMe][yPositionMe + 1];
-				matriz[xPositionMe][yPositionMe + 1] = matriz[xPositionMe][yPositionMe];
-				matriz[xPositionMe][yPositionMe] = numeroTrocaMovimento;
+			if (matrizCopy[xPositionMe][yPositionMe + 1]) {
+				numeroTrocaMovimento = matrizCopy[xPositionMe][yPositionMe + 1];
+				matrizCopy[xPositionMe][yPositionMe + 1] = matrizCopy[xPositionMe][yPositionMe];
+				matrizCopy[xPositionMe][yPositionMe] = numeroTrocaMovimento;
 			}
 			break
 	}
-	return matriz;
+	return matrizCopy;
 }
 
-while(true){
+while (true) {
 
 	console.clear()
 
-	console.log(matriz[0])
-	console.log(matriz[1])
-	console.log(matriz[2])
-
-	console.log()
+	printMatriz(matriz);
 
 	var melhorMovimento = calculaMelhorJogada(matriz)
 
 	fazJogada(melhorMovimento, matriz);
-
-	console.log(matriz[0])
-	console.log(matriz[1])
-	console.log(matriz[2])
 
 
 	break;
