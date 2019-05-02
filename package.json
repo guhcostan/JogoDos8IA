@@ -1,8 +1,13 @@
 {
-  "name": "jogodos8ia",
+
+  "name": "jogo-dos-8",
   "version": "1.0.0",
   "description": "## Ideia principal do algoritimo",
   "main": "jogo.js",
+  "dependencies": {
+    "lodash": "^4.17.11"
+  },
+  "devDependencies": {},
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -15,8 +20,5 @@
   "bugs": {
     "url": "https://github.com/guhcostan/JogoDos8IA/issues"
   },
-  "homepage": "https://github.com/guhcostan/JogoDos8IA#readme",
-  "dependencies": {
-    "lodash": "^4.17.11"
-  }
-}
+  "homepage": "https://github.com/guhcostan/JogoDos8IA#readme"
+ }
