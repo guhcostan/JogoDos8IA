@@ -1,0 +1,22 @@
+{
+  "name": "jogodos8ia",
+  "version": "1.0.0",
+  "description": "## Ideia principal do algoritimo",
+  "main": "jogo.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/guhcostan/JogoDos8IA.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/guhcostan/JogoDos8IA/issues"
+  },
+  "homepage": "https://github.com/guhcostan/JogoDos8IA#readme",
+  "dependencies": {
+    "lodash": "^4.17.11"
+  }
+}
