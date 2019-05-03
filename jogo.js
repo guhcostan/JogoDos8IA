@@ -1,12 +1,11 @@
-var _ = require('lodash');
-
-function getRandomNumber() {
+const NUMERO_THREADS = 10;
+function getRandomNumber(numeros) {
 	var number = Math.floor(Math.random() * 9);
 	if (!numeros.includes(number)) {
 		numeros.push(number)
 		return number;
 	} else {
-		return getRandomNumber()
+		return getRandomNumber(numeros)
 	}
 }
 
@@ -19,28 +18,11 @@ function printMatriz(matriz) {
 	console.log()
 }
 
-var matriz = new Array(3)
-matriz[0] = new Array(3)
-matriz[1] = new Array(3)
-matriz[2] = new Array(3)
 
 var matrizSucesso = new Array(3)
 matrizSucesso[0] = new Array(3)
 matrizSucesso[1] = new Array(3)
 matrizSucesso[2] = new Array(3)
-
-
-var numeros = []
-
-matriz[0][0] = getRandomNumber();
-matriz[0][1] = getRandomNumber();
-matriz[0][2] = getRandomNumber();
-matriz[1][0] = getRandomNumber();
-matriz[1][1] = getRandomNumber();
-matriz[1][2] = getRandomNumber();
-matriz[2][0] = getRandomNumber();
-matriz[2][1] = getRandomNumber();
-matriz[2][2] = getRandomNumber();
 
 matrizSucesso[1][1] = 0;
 matrizSucesso[0][0] = 1;
@@ -53,6 +35,32 @@ matrizSucesso[2][1] = 6;
 matrizSucesso[2][0] = 7;
 matrizSucesso[1][0] = 8;
 
+function geraMatriz() {
+
+	var numeros = []
+
+	var matriz = new Array(3)
+	matriz[0] = new Array(3)
+	matriz[1] = new Array(3)
+	matriz[2] = new Array(3)
+	matriz[0][0] = getRandomNumber(numeros);
+	matriz[0][1] = getRandomNumber(numeros);
+	matriz[0][2] = getRandomNumber(numeros);
+	matriz[1][0] = getRandomNumber(numeros);
+	matriz[1][1] = getRandomNumber(numeros);
+	matriz[1][2] = getRandomNumber(numeros);
+	matriz[2][0] = getRandomNumber(numeros);
+	matriz[2][1] = getRandomNumber(numeros);
+	matriz[2][2] = getRandomNumber(numeros);
+
+	var passos = startGameSync(JSON.parse(JSON.stringify(matriz)));
+	if (passos > 5000) {
+		return geraMatriz();
+	}
+	return matriz;
+}
+
+var matriz = geraMatriz();
 
 function pegaPosicao(matriz, elemento) {
 	var xPosition;
@@ -65,7 +73,7 @@ function pegaPosicao(matriz, elemento) {
 		}
 	}
 
-	return erro;
+	return 'erro';
 }
 
 function calcularJogadasPossiveis(matriz, xPositionMe, yPositionMe) {
@@ -173,6 +181,37 @@ console.log('Calculando...');
 async function startGame(matriz){
 
 	var passos = 0;
+	var jogadas = []
+	var penUltimoMovimento = '';
+	var ultimoMovimento = '';
+
+	while (calculaScore(matriz, matrizSucesso)) {
+
+		var melhorMovimento = calculaMelhorJogada(matriz , penUltimoMovimento, calculaScore(matriz, matrizSucesso))
+
+		penUltimoMovimento = ultimoMovimento;
+		ultimoMovimento = melhorMovimento;
+
+		fazJogada(melhorMovimento, matriz);
+
+		jogadas.push(JSON.parse(JSON.stringify(matriz)));
+
+		passos++;
+
+		if(passos > 5000){
+			break;
+		}
+	}
+
+	return { passos,
+		jogadas};
+
+}
+
+
+function startGameSync(matriz){
+
+	var passos = 0;
 	var penUltimoMovimento = '';
 	var ultimoMovimento = '';
 
@@ -192,10 +231,7 @@ async function startGame(matriz){
 		}
 	}
 
-	return passos < 5001 ? passos : null ;
-	printMatriz(matriz);
-
-	console.log('Numero de passos: ' + passos)
+	return passos;
 
 }
 
@@ -210,12 +246,25 @@ function createPromise(matrizCopy){
 }
 
 var promisses = [];
-for(var x = 0; x < 100; x++){
+for(var x = 0; x < NUMERO_THREADS; x++){
 	promisses[x] = createPromise(JSON.parse(JSON.stringify(matriz)));
 }
 
 Promise.all(promisses).then(function(result){
 	console.log(result)
 	var media = result => result.reduce((a,b) => a + b, 0) / result.length
-	console.log(media(result))
+	console.log(media(result.map(a => a.passos)))
+
+	var melhorPerformace = result[0];
+	for(var i = 0; i < result.length; i++){
+		if(melhorPerformace.passos > result[i].passos){
+			melhorPerformace = result[i]
+		}
+	}
+
+	for(var i2 = 0; i2 < melhorPerformace.jogadas.length; i2++) {
+		console.log("Passo " + i2 + ": \n");
+		printMatriz(melhorPerformace.jogadas[i2])
+	}
+
 })
