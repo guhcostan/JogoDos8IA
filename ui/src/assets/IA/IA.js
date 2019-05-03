@@ -1,18 +1,14 @@
 function isOposto(ultimoMovimento, jogadasPossivei) {
 	if(ultimoMovimento === 'esquerda' && jogadasPossivei.movimento === 'direita'){
-		console.log("OPOSTO")
 		return true;
 	}
 	if(ultimoMovimento === 'direita' && jogadasPossivei.movimento === 'esquerda'){
-		console.log("OPOSTO")
 		return true;
 	}
 	if(ultimoMovimento === 'topo' && jogadasPossivei.movimento === 'baixo'){
-		console.log("OPOSTO")
 		return true;
 	}
 	if(ultimoMovimento === 'baixo' && jogadasPossivei.movimento === 'topo'){
-		console.log("OPOSTO")
 		return true;
 	}
 	return false;
@@ -144,6 +140,11 @@ export default class IA {
 			var melhorJogada = jogadasPossiveis[Math.floor((Math.random() *
 			                                                jogadasPossiveis.length))];
 
+			while(isOposto(ultimoMovimento, melhorJogada)){
+				melhorJogada = jogadasPossiveis[Math.floor((Math.random() *
+				                             jogadasPossiveis.length))];
+			}
+
 			for (var x1 = 0; x1 < jogadasPossiveis.length; ++x1) {
 
 				var matrizComparativa = fazJogada(jogadasPossiveis[x1].movimento, JSON.parse(JSON.stringify(matrizCopy)));
@@ -200,10 +201,6 @@ export default class IA {
 			}
 			return matriz;
 		}
-
-		printMatriz(matriz);
-
-		console.log('Calculando...');
 
 		async function startGame(matriz) {
 

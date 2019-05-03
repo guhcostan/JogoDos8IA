@@ -1,6 +1,6 @@
 <template lang="pug">
 	#app
-		p(v-if="melhorJogada.numeroJogadas") Numero de passos: {{melhorJogada.numeroJogadas}}
+		p(v-if="melhorJogada.numeroJogadas") Numero de passos: {{melhorJogada.numeroJogadas - 1}}
 		p(v-else) Carregando ...
 
 		p(v-if="melhorJogada.numeroJogadas") Passo: {{matriz.numero}}
