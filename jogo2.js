@@ -166,15 +166,16 @@ function fazJogada(melhorMovimento, matriz) {
 	return matriz;
 }
 
-var passos = 0;
-var penUltimoMovimento = '';
-var ultimoMovimento = '';
-
 printMatriz(matriz);
 
 console.log('Calculando...');
 
 async function startGame(matriz){
+
+var passos = 0;
+var penUltimoMovimento = '';
+var ultimoMovimento = '';
+
 while (calculaScore(matriz, matrizSucesso)) {
 
 	var melhorMovimento = calculaMelhorJogada(matriz , penUltimoMovimento, calculaScore(matriz, matrizSucesso))
@@ -186,8 +187,7 @@ while (calculaScore(matriz, matrizSucesso)) {
 
   passos++;
 
-  if(passos > 50000){
-    console.log('Programa parou')
+  if(passos > 5000){
     break;
   }
 }
@@ -209,16 +209,12 @@ return new Promise(resolve => {
   });
 }
 
+var promisses = [];
+for(var x = 0; x < 100; x++){
+  promisses[x] = createPromise(JSON.parse(JSON.stringify(matriz)));
+}
 
-var promise1 = createPromise(JSON.parse(JSON.stringify(matriz)));
-var promise2 = createPromise(JSON.parse(JSON.stringify(matriz)));
-var promise3 = createPromise(JSON.parse(JSON.stringify(matriz)));
-var promise4 = createPromise(JSON.parse(JSON.stringify(matriz)));
-var promise5 = createPromise(JSON.parse(JSON.stringify(matriz)));
-var promise6 = createPromise(JSON.parse(JSON.stringify(matriz)));
-var promise7 = createPromise(JSON.parse(JSON.stringify(matriz)));
-
-Promise.all([promise1, promise2, promise3, promise4, promise5, promise6, promise7]).then(function(result){
+Promise.all(promisses).then(function(result){
   console.log(result)
   var media = result => result.reduce((a,b) => a + b, 0) / result.length
   console.log(media(result))
