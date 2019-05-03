@@ -166,25 +166,56 @@ function fazJogada(melhorMovimento, matriz) {
 	return matriz;
 }
 
+printMatriz(matriz);
 
-var penUltimoMovimento = '';
-var ultimoMovimento = '';
-while (calculaScore(matriz, matrizSucesso)) {
+console.log('Calculando...');
 
-	console.clear()
+async function startGame(matriz){
 
+	var passos = 0;
+	var penUltimoMovimento = '';
+	var ultimoMovimento = '';
+
+	while (calculaScore(matriz, matrizSucesso)) {
+
+		var melhorMovimento = calculaMelhorJogada(matriz , penUltimoMovimento, calculaScore(matriz, matrizSucesso))
+
+		penUltimoMovimento = ultimoMovimento;
+		ultimoMovimento = melhorMovimento;
+
+		fazJogada(melhorMovimento, matriz);
+
+		passos++;
+
+		if(passos > 5000){
+			break;
+		}
+	}
+
+	return passos < 5001 ? passos : null ;
 	printMatriz(matriz);
 
-	var melhorMovimento = calculaMelhorJogada(matriz , penUltimoMovimento, calculaScore(matriz, matrizSucesso))
-
-	penUltimoMovimento = ultimoMovimento;
-	ultimoMovimento = melhorMovimento;
-
-	console.log(melhorMovimento)
-
-	fazJogada(melhorMovimento, matriz);
-
-
-	console.log(calculaScore(matriz, matrizSucesso))
+	console.log('Numero de passos: ' + passos)
 
 }
+
+function createPromise(matrizCopy){
+
+	return new Promise(resolve => {
+		setTimeout(() => {
+			var passos = startGame(matrizCopy)
+			resolve(passos);
+		}, 1);
+	});
+}
+
+var promisses = [];
+for(var x = 0; x < 100; x++){
+	promisses[x] = createPromise(JSON.parse(JSON.stringify(matriz)));
+}
+
+Promise.all(promisses).then(function(result){
+	console.log(result)
+	var media = result => result.reduce((a,b) => a + b, 0) / result.length
+	console.log(media(result))
+})
