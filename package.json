@@ -4,9 +4,12 @@
   "private": true,
   "scripts": {
     "serve": "vue-cli-service serve",
-    "build": "vue-cli-service build"
+    "dev": "node build/dev-server.js",
+    "build": "node build/build.js",
+    "start": "node server.js"
   },
   "dependencies": {
+    "express": "^4.16.4",
     "pug": "^2.0.3",
     "pug-plain-loader": "^1.0.0",
     "vue": "^2.6.10"
