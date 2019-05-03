@@ -192,7 +192,7 @@ while (calculaScore(matriz, matrizSucesso)) {
   }
 }
 
-return passos;
+return passos < 5001 ? passos : null ;
 printMatriz(matriz);
 
 console.log('Numero de passos: ' + passos)
