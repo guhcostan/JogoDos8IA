@@ -1,25 +1,29 @@
 {
   "name": "jogo-dos-8",
-  "version": "1.0.0",
-  "description": "## Ideia principal do algoritimo",
-  "main": "ui/src/assets/IA/IA.js",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "serve": "vue-cli-service serve",
+    "build": "vue-cli-service build"
+  },
   "dependencies": {
-    "lodash": "^4.17.11"
+    "pug": "^2.0.3",
+    "pug-plain-loader": "^1.0.0",
+    "vue": "^2.6.10"
   },
   "devDependencies": {
-    "electron": "^5.0.0"
+    "@vue/cli-service": "^3.7.0",
+    "sass": "^1.18.0",
+    "sass-loader": "^7.1.0",
+    "vue-template-compiler": "^2.5.21"
   },
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+  "postcss": {
+    "plugins": {
+      "autoprefixer": {}
+    }
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/guhcostan/JogoDos8IA.git"
-  },
-  "author": "",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/guhcostan/JogoDos8IA/issues"
-  },
-  "homepage": "https://github.com/guhcostan/JogoDos8IA#readme"
+  "browserslist": [
+    "> 1%",
+    "last 2 versions"
+  ]
 }

@@ -1,7 +1,11 @@
-# JogoDos8IA
+# Jogo dos 8 - IA
 
-## Ideia principal do algoritimo
+## Project setup
+```
+npm install
+```
 
-- Ver todos os lados possiveis e calcular quantos numeros ficarão no lugar correto.
-- Calcular qual dos movimentos é melhor.
-- Mover
+### Compiles and hot-reloads for development
+```
+npm run serve
+```
