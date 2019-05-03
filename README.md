@@ -9,3 +9,8 @@ npm install
 ```
 npm run serve
 ```
+
+
+## Link
+
+https://jogo-dos-8-ia-test.herokuapp.com/
