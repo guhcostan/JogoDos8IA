@@ -18,6 +18,7 @@ export default class IA {
 
 	static StartIa() {
 		const NUMERO_THREADS = 1000;
+		let THREADS_SUCESSFULL = 0;
 
 		function getRandomNumber(numeros) {
 			var number = Math.floor(Math.random() * 9);
@@ -227,6 +228,8 @@ export default class IA {
 				}
 			}
 
+			THREADS_SUCESSFULL++;
+			console.log(THREADS_SUCESSFULL);
 			return {
 				passos,
 				jogadas
