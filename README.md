@@ -13,4 +13,4 @@ npm run serve
 
 ## Link
 
-https://jogo-dos-8-ia-test.herokuapp.com/
+https://jogo-dos-8-ia.herokuapp.com
