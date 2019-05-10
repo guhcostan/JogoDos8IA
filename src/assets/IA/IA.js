@@ -17,7 +17,7 @@ function isOposto(ultimoMovimento, jogadasPossivei) {
 export default class IA {
 
 	static StartIa() {
-		const NUMERO_THREADS = 1000;
+		const NUMERO_THREADS = 300;
 		let THREADS_SUCESSFULL = 0;
 
 		function getRandomNumber(numeros) {
