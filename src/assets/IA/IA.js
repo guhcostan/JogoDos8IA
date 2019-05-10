@@ -16,7 +16,7 @@ function isOposto(ultimoMovimento, jogadasPossivei) {
 
 export default class IA {
 
-	static StartIa() {
+	static async StartIa() {
 		const NUMERO_THREADS = 300;
 		let THREADS_SUCESSFULL = 0;
 
@@ -276,7 +276,7 @@ export default class IA {
 
 		var promisses = [];
 		for (var x = 0; x < NUMERO_THREADS; x++) {
-			promisses[x] = createPromise(JSON.parse(JSON.stringify(matriz)));
+			promisses[x] = await createPromise(JSON.parse(JSON.stringify(matriz)));
 		}
 
 		return Promise.all(promisses).then(function (result) {
